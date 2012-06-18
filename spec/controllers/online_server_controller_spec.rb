@@ -26,7 +26,7 @@ describe OnlineServerController do
     	#get 'online', :name => 'jsilver server', :port => 1337
     	get 'msl'
     	response.should be_success
-    	p response.body
+    	response.body.should == "jsilver server:0.0.0.0:1337"
     end
   end
 
