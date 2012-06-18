@@ -9,4 +9,8 @@ class OnlineServer < ActiveRecord::Base
   	OnlineServer.find_by_ip(ip).destroy
   end
 
+  def self.msl
+  	OnlineServer.all.collect { |s| [s.name, s.ip, s.port].join(":") }.join("\n")
+  end
+
 end
