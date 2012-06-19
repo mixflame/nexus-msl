@@ -8,7 +8,7 @@ class OnlineServer < ActiveRecord::Base
   end
 
   def self.set_offline(ip)
-  	OnlineServer.find_by_ip(ip).destroy
+  	OnlineServer.destroy(:conditions => {:ip => ip})
   end
 
   def self.msl
