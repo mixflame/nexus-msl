@@ -12,7 +12,7 @@ class OnlineServer < ActiveRecord::Base
   end
 
   def self.msl
-  	OnlineServer.all.collect { |s| [s.name, s.ip, s.port, s.url].join(":") }.join("\n")
+  	OnlineServer.all.collect { |s| [s.name, s.ip, s.port, s.url].join("-!!!-") }.join("\n")
   end
 
 end
