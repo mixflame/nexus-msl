@@ -3,8 +3,8 @@ class OnlineServer < ActiveRecord::Base
   validates_uniqueness_of :name
   validates_uniqueness_of :ip
 
-  def self.set_online(name, ip, port)
-  	OnlineServer.create(:name => name, :ip => ip, :port => port)
+  def self.set_online(name, ip, port, url)
+  	OnlineServer.create(:name => name, :ip => ip, :port => port, :url => url)
   end
 
   def self.set_offline(ip)
@@ -12,7 +12,7 @@ class OnlineServer < ActiveRecord::Base
   end
 
   def self.msl
-  	OnlineServer.all.collect { |s| [s.name, s.ip, s.port].join(":") }.join("\n")
+  	OnlineServer.all.collect { |s| [s.name, s.ip, s.port, s.url].join(":") }.join("\n")
   end
 
 end
