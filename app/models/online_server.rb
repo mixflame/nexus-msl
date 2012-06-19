@@ -1,5 +1,5 @@
 class OnlineServer < ActiveRecord::Base
-  attr_accessible :ip, :name, :port
+  attr_accessible :ip, :name, :port, :url
   validates_uniqueness_of :name
   validates_uniqueness_of :ip
 
