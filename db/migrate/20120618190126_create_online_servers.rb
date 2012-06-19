@@ -4,7 +4,7 @@ class CreateOnlineServers < ActiveRecord::Migration
       t.string :name
       t.string :ip
       t.integer :port
-      t.integer :url
+      t.string :url
 
       t.timestamps
     end
