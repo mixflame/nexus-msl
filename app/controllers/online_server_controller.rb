@@ -3,7 +3,7 @@ class OnlineServerController < ApplicationController
 
   def online
     my_ip = request.ip
-    server = OnlineServer.set_online(params[:name], my_ip, params[:port], params[:url])
+    server = OnlineServer.set_online(params[:name], my_ip, params[:port])
     render :nothing => true
   end
 
