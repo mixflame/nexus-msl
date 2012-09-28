@@ -6,7 +6,8 @@ describe OnlineServer do
     @ip = "127.0.0.1"
     @name = "jsilver"
     @port = 31337
-    OnlineServer.set_online(@name, @ip, @port)
+    @url = "http://jsilver.com"
+    OnlineServer.set_online(@name, @ip, @port, @url)
   end
 
 
@@ -22,7 +23,7 @@ describe OnlineServer do
 
   it 'can return the MSL' do
     msl = OnlineServer.msl
-    msl.should == "jsilver:127.0.0.1:31337"
+    msl.should == "jsilver-!!!-127.0.0.1-!!!-31337-!!!-http://jsilver.com"
   end
 
 end

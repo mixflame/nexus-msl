@@ -3,7 +3,7 @@ require 'spec_helper'
 describe OnlineServerController do
 
 	before :each do
-		get 'online', :name => 'jsilver server', :port => 1337
+		get 'online', :name => 'jsilver server', :port => 1337, :url => "http://jsilver.com"
 	end
 
   describe "GET 'online'" do
@@ -26,7 +26,7 @@ describe OnlineServerController do
     	#get 'online', :name => 'jsilver server', :port => 1337
     	get 'msl'
     	response.should be_success
-    	response.body.should == "jsilver server:0.0.0.0:1337"
+    	response.body.should == "jsilver server-!!!-0.0.0.0-!!!-1337-!!!-http://jsilver.com"
     end
   end
 

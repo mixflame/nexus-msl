@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20120618190126) do
     t.string   "name"
     t.string   "ip"
     t.integer  "port"
+    t.string   "url"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
