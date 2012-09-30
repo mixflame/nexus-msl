@@ -7,6 +7,8 @@ It is semi-secure (no spoofing!) and has 3 apis
 GET /online/:name/:port
 adds your IP to the MSL with the name and the port
 
+2nd ping: change your name if u ping again
+
 GET /offline
 takes your IP off of the MSL
 
