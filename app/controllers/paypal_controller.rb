@@ -1,5 +1,4 @@
 class PaypalController < ApplicationController
-  include HTTParty
 
   protect_from_forgery :except => :paypal_ipn
 
@@ -52,7 +51,7 @@ class PaypalController < ApplicationController
     # http.use_ssl = true
     # response = http.post('/cgi-bin/webscr', query)
 
-    response = self.post(
+    response = HTTParty.post(
     uri.to_s,
     :body => query
     )
