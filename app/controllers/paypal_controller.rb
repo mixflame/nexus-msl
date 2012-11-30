@@ -51,8 +51,14 @@ class PaypalController < ApplicationController
     # response = http.post('/cgi-bin/webscr', query)
 
 
-    http = Net::HTTP.start(paypal_url, 80)
-    response = http.post('/cgi-bin/webscr', query)
+    http = Net::HTTP.new(paypal_url, 80)
+    http.open_timeout = 60
+    http.read_timeout = 60
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.use_ssl = true
+    response =  http.start do |http|
+      http.post('/cgi-bin/webscr', query)
+    end
     http.finish
 
     item_name = params[:item_name]
