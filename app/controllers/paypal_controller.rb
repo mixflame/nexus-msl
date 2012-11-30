@@ -35,11 +35,11 @@ class PaypalController < ApplicationController
     request.params.each_pair {|key, value| query = query + '&' + key + '=' +
     value if key != 'register/pay_pal_ipn.html/pay_pal_ipn' }
 
-    paypal_url = 'https://www.paypal.com/cgi-bin/webscr'
-    if ENV['RAILS_ENV'] == 'development'
-      logger.info 'using sandbox'
-      paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
-    end
+    #paypal_url = 'https://www.paypal.com/cgi-bin/webscr'
+    #if ENV['RAILS_ENV'] == 'development'
+    logger.info 'using sandbox'
+    paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
+    #end
 
     uri = URI.parse(paypal_url)
     # uri.scheme = "https"
