@@ -35,26 +35,16 @@ class PaypalController < ApplicationController
     request.params.each_pair {|key, value| query = query + '&' + key + '=' +
     value if key != 'register/pay_pal_ipn.html/pay_pal_ipn' }
 
+    # FIXME: change to live when ready
     #paypal_url = 'https://www.paypal.com/cgi-bin/webscr'
-    #if ENV['RAILS_ENV'] == 'development'
     logger.info 'using sandbox'
     paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
-    #end
-
     uri = URI.parse(paypal_url)
-    # uri.scheme = "https"
-
     http = Net::HTTP.new(uri.host, uri.port)
-    # http.open_timeout = 60
-    # http.read_timeout = 60
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     http.use_ssl = true
-    # response = http.post('/cgi-bin/webscr', query)
-
     http.start
-
     response = http.post(uri.to_s, query)
-
     http.finish
 
     item_name = params[:item_name]
