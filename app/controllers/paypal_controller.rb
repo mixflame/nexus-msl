@@ -41,14 +41,17 @@ class PaypalController < ApplicationController
       paypal_url = 'www.sandbox.paypal.com'
     end
 
-    # Verify all this with paypal
-    http = Net::HTTP.new(paypal_url, 443)
-    http.open_timeout = 30
-    http.read_timeout = 30
-    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    uri = URI.parse(paypal_url)
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.open_timeout = 60
+    http.read_timeout = 60
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     http.use_ssl = true
-    response = http.post('/cgi-bin/webscr', query)
-    http.finish
+    response = http.post(uri.request_uri, query,
+    'Content-Length' => "#{query.size}"
+    )
+
 
     item_name = params[:item_name]
     item_number = params[:item_number]
