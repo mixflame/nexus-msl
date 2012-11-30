@@ -1,4 +1,5 @@
 class PaypalController < ApplicationController
+  include HTTParty
 
   protect_from_forgery :except => :paypal_ipn
 
@@ -41,7 +42,8 @@ class PaypalController < ApplicationController
       paypal_url = 'www.sandbox.paypal.com'
     end
 
-    # uri = URI.parse(paypal_url)
+    uri = URI.parse(paypal_url)
+    uri.scheme = "https"
 
     # http = Net::HTTP.new(uri.host, uri.port)
     # http.open_timeout = 60
@@ -50,16 +52,10 @@ class PaypalController < ApplicationController
     # http.use_ssl = true
     # response = http.post('/cgi-bin/webscr', query)
 
-
-    http = Net::HTTP.new(paypal_url, 80)
-    http.open_timeout = 60
-    http.read_timeout = 60
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    http.use_ssl = true
-    response =  http.start do |http|
-      http.post('/cgi-bin/webscr', query)
-    end
-    http.finish
+    response = self.post(
+    uri.to_s,
+    :body => query
+    )
 
     item_name = params[:item_name]
     item_number = params[:item_number]
