@@ -51,10 +51,7 @@ class PaypalController < ApplicationController
     http.use_ssl = true
     # response = http.post('/cgi-bin/webscr', query)
 
-    response = http.post(
-    uri.to_s,
-    :body => query
-    )
+    response = http.post(uri.to_s, query)
 
     http.finish
 
