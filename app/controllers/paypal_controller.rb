@@ -42,7 +42,7 @@ class PaypalController < ApplicationController
     end
 
     # Verify all this with paypal
-    http = Net::HTTP.new(paypal_url, 80)
+    http = Net::HTTP.new(paypal_url, 443)
     http.open_timeout = 30
     http.read_timeout = 30
     #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
