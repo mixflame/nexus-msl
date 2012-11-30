@@ -1,30 +1,36 @@
 class PaypalController < ApplicationController
+  require 'net/http'
 
   protect_from_forgery :except => :paypal_ipn
 
   # This will be called when soemone first subscribes
-  def sign_up_user(custom, plan_id)
-    logger.info("sign_up_user (#{custom}) #{plan_id}")
+  def sign_up_user(payer_email, plan_id)
+    logger.info("sign_up_user (#{payer_email}) #{plan_id}")
+    # new "account".. notify servdrop
+    Net::HTTP.get("http://globalchat2.net/main/drop_server?email=#{payer_email}")
   end
 
   # This will be called if someone cancels a payment
-  def cancel_subscription(custom, plan_id)
-    logger.info("cacnel_subscription (#{custom}) #{plan_id}")
+  def cancel_subscription(payer_email, plan_id)
+    logger.info("cancel_subscription (#{payer_email}) #{plan_id}")
+    # acct canceled, destroy server
   end
 
   # This will be called if a subscription expires
-  def subscription_expired(custom, plan_id)
-    logger.info("subscription_expired (#{custom}) #{plan_id}")
+  def subscription_expired(payer_email, plan_id)
+    logger.info("subscription_expired (#{payer_email}) #{plan_id}")
+    # wont happen.. no expiry
   end
 
   # Called if a subscription fails
-  def subscription_failed(custom, plan_id)
-    logger.info("subscription_failed (#{custom}) #{plan_id}")
+  def subscription_failed(payer_email, plan_id)
+    logger.info("subscription_failed (#{payer_email}) #{plan_id}")
+    # destroy the server
   end
 
   # Called each time paypal collects a payment
-  def subscription_payment(custom, plan_id)
-    logger.info("recurrent_payment_received (#{custom}) #{plan_id}")
+  def subscription_payment(payer_email, plan_id)
+    logger.info("recurrent_payment_received (#{payer_email}) #{plan_id}")
   end
 
   # process the PayPal IPN POST
@@ -51,7 +57,7 @@ class PaypalController < ApplicationController
     item_number = params[:item_number]
     payment_status = params[:payment_status]
     txn_type = params[:txn_type]
-    custom = params[:custom]
+    payer_email = params[:payer_email]
 
     logger.info "payment status: #{payment_status}"
     logger.info "txn_type #{txn_type}"
@@ -61,15 +67,15 @@ class PaypalController < ApplicationController
     if response && response.body.chomp == 'VERIFIED'
 
       if txn_type == 'subscr_signup'
-        sign_up_user(custom, item_number)
+        sign_up_user(payer_email, item_number)
       elsif txn_type == 'subscr_cancel'
-        cancel_subscription(custom, item_number)
+        cancel_subscription(payer_email, item_number)
       elsif txn_type == 'subscr_eot'
-        subscription_expired(custom, item_number)
+        subscription_expired(payer_email, item_number)
       elsif txn_type == 'subscr_failed'
-        subscription_failed(custom, item_number)
+        subscription_failed(payer_email, item_number)
       elsif txn_type == 'subscr_payment' && payment_status == 'Completed'
-        subscription_payment(custom, item_number)
+        subscription_payment(payer_email, item_number)
       end
 
       render :text => 'OK'
