@@ -44,17 +44,19 @@ class PaypalController < ApplicationController
     uri = URI.parse(paypal_url)
     uri.scheme = "https"
 
-    # http = Net::HTTP.new(uri.host, uri.port)
+    http = Net::HTTP.new(uri.host, uri.port)
     # http.open_timeout = 60
     # http.read_timeout = 60
-    # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    # http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.use_ssl = true
     # response = http.post('/cgi-bin/webscr', query)
 
-    response = Net::HTTP.post(
+    response = http.post(
     uri.to_s,
     :body => query
     )
+
+    http.finish
 
     item_name = params[:item_name]
     item_number = params[:item_number]
