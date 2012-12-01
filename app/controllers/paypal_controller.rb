@@ -21,12 +21,14 @@ class PaypalController < ApplicationController
   def subscription_expired(payer_email, plan_id)
     logger.info("subscription_expired (#{payer_email}) #{plan_id}")
     # wont happen.. no expiry
+    Net::HTTP.get("globalchat2.net", "/main/destroy_server?email=#{payer_email}")
   end
 
   # Called if a subscription fails
   def subscription_failed(payer_email, plan_id)
     logger.info("subscription_failed (#{payer_email}) #{plan_id}")
     # destroy the server
+    Net::HTTP.get("globalchat2.net", "/main/destroy_server?email=#{payer_email}")
   end
 
   # Called each time paypal collects a payment
