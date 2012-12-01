@@ -45,9 +45,9 @@ class PaypalController < ApplicationController
     value if key != 'register/pay_pal_ipn.html/pay_pal_ipn' }
 
     # FIXME: change to live when ready
-    #paypal_url = 'https://www.paypal.com/cgi-bin/webscr'
-    logger.info 'using sandbox'
-    paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
+    paypal_url = 'https://www.paypal.com/cgi-bin/webscr'
+    #logger.info 'using sandbox'
+    #paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
     uri = URI.parse(paypal_url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
