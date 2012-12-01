@@ -59,16 +59,23 @@ class PaypalController < ApplicationController
     payment_status = params[:payment_status]
     txn_type = params[:txn_type]
     payer_email = params[:payer_email]
+    mc_gross = params[:mc_gross]
 
     logger.info "payment status: #{payment_status}"
     logger.info "txn_type #{txn_type}"
     logger.info "response #{response.body.to_s}"
+    logger.info "gross #{mc_gross}"
 
     # Paypal confirms so lets process.
     if response && response.body.chomp == 'VERIFIED'
 
       if txn_type == 'subscr_signup'
-        sign_up_user(payer_email, item_number)
+        if mc_gross == "5.00"
+          sign_up_user(payer_email, item_number)
+        else
+          render :text => 'ERROR'
+          return
+        end
       elsif txn_type == 'subscr_cancel'
         cancel_subscription(payer_email, item_number)
       elsif txn_type == 'subscr_eot'
