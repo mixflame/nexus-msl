@@ -7,7 +7,8 @@ class PaypalController < ApplicationController
   def sign_up_user(payer_email, plan_id)
     logger.info("sign_up_user (#{payer_email}) #{plan_id}")
     # new "account".. notify servdrop
-    Net::HTTP.get("globalchat2.net", "/main/drop_server?email=#{payer_email}")
+    # no op
+    #Net::HTTP.get("globalchat2.net", "/main/drop_server?email=#{payer_email}")
   end
 
   # This will be called if someone cancels a payment
@@ -34,6 +35,7 @@ class PaypalController < ApplicationController
   # Called each time paypal collects a payment
   def subscription_payment(payer_email, plan_id)
     logger.info("recurrent_payment_received (#{payer_email}) #{plan_id}")
+    Net::HTTP.get("globalchat2.net", "/main/drop_server?email=#{payer_email}")
   end
 
   # process the PayPal IPN POST
