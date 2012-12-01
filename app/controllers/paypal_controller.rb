@@ -7,7 +7,7 @@ class PaypalController < ApplicationController
   def sign_up_user(payer_email, plan_id)
     logger.info("sign_up_user (#{payer_email}) #{plan_id}")
     # new "account".. notify servdrop
-    Net::HTTP.get("http://globalchat2.net/main/drop_server?email=#{payer_email}")
+    Net::HTTP.get("globalchat2.net", "/main/drop_server?email=#{payer_email}")
   end
 
   # This will be called if someone cancels a payment
