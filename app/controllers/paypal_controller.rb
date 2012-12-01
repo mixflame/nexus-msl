@@ -14,6 +14,7 @@ class PaypalController < ApplicationController
   def cancel_subscription(payer_email, plan_id)
     logger.info("cancel_subscription (#{payer_email}) #{plan_id}")
     # acct canceled, destroy server
+    Net::HTTP.get("globalchat2.net", "/main/destroy_server?email=#{payer_email}")
   end
 
   # This will be called if a subscription expires
