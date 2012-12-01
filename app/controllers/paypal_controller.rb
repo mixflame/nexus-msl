@@ -74,12 +74,7 @@ class PaypalController < ApplicationController
     if response && response.body.chomp == 'VERIFIED'
 
       if txn_type == 'subscr_signup'
-        if mc_gross == "5.00"
-          sign_up_user(payer_email, item_number)
-        else
-          render :text => 'ERROR'
-          return
-        end
+        sign_up_user(payer_email, item_number)
       elsif txn_type == 'subscr_cancel'
         cancel_subscription(payer_email, item_number)
       elsif txn_type == 'subscr_eot'
@@ -87,7 +82,12 @@ class PaypalController < ApplicationController
       elsif txn_type == 'subscr_failed'
         subscription_failed(payer_email, item_number)
       elsif txn_type == 'subscr_payment' && payment_status == 'Completed'
-        subscription_payment(payer_email, item_number)
+        if mc_gross == "5.00"
+          subscription_payment(payer_email, item_number)
+        else
+          render :text => 'ERROR'
+          return
+        end
       end
 
       render :text => 'OK'
