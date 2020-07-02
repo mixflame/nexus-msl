@@ -3,9 +3,9 @@ class OnlineServer < ActiveRecord::Base
   validates_uniqueness_of :name
   # validates_uniqueness_of :ip
 
-  def self.set_online(name, ip, port, host)
-    server = OnlineServer.find_or_create_by_name(name)
-    server.update_attributes(:name => name, :port => port, :host => host, :ip => ip)
+  def self.set_online(name, ip, port)
+    server = OnlineServer.find_or_create_by(name: name)
+    server.update_attributes(:name => name, :port => port, :ip => ip)
   end
 
   # off GCNet only
@@ -22,7 +22,7 @@ class OnlineServer < ActiveRecord::Base
   end
 
   def self.msl
-    OnlineServer.all.collect { |s| [s.name, s.host, s.port].join("-!!!-") }.join("\n")
+    OnlineServer.all.collect { |s| [s.name, s.ip, s.port ].join("-!!!-") }.join("\n")
   end
 
 end
