@@ -58,3 +58,4 @@ end
 
 # To use debugger
 # gem 'ruby-debug'
+gem 'rails_12factor', group: :production
