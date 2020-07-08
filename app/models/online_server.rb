@@ -4,7 +4,8 @@ class OnlineServer < ActiveRecord::Base
   # validates_uniqueness_of :ip
 
   def self.set_online(name, ip, port)
-    server = OnlineServer.find_or_create_by(name: name)
+    OnlineServer.where(ip: ip).destroy_all
+    server = OnlineServer.find_or_create_by(ip: ip)
     server.update_attributes(:name => name, :port => port, :ip => ip)
   end
 
