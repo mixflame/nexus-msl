@@ -9,17 +9,8 @@ class OnlineServer < ActiveRecord::Base
     server.update_attributes(:name => name, :port => port, :ip => ip)
   end
 
-  # off GCNet only
-  # deprecated.. not called by ServDrop
   def self.set_offline(ip)
     OnlineServer.destroy_all(["online_servers.ip = ?", ip])
-  end
-
-  # on GCNet only
-  # insecure.. outside clients cant be trusted with this method
-  # unless whitelisted
-  def self.set_offline_by_name(name)
-    OnlineServer.destroy_all(["online_servers.name = ?", name])
   end
 
   def self.msl

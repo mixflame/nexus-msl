@@ -30,11 +30,6 @@ class OnlineServerController < ApplicationController
     render :nothing => true
   end
 
-  def offline_by_name
-    OnlineServer.set_offline_by_name(params[:name])
-    render :nothing => true
-  end
-
   def msl
     render :text => OnlineServer.msl
   end
