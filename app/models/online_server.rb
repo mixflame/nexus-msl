@@ -23,7 +23,11 @@ class OnlineServer < ActiveRecord::Base
   end
 
   def self.msl
-    OnlineServer.all.collect { |s| [s.name, s.ip, s.port ].join("-!!!-") }.join("\n")
+    OnlineServer.all.collect { |s| 
+    if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
+      ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
+    end
+  }.join("\n")
   end
 
 end
