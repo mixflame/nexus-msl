@@ -1,3 +1,5 @@
+require 'net/ping'
+
 class OnlineServer < ActiveRecord::Base
   attr_accessible :ip, :name, :port, :url, :host
   validates_uniqueness_of :name
@@ -18,22 +20,10 @@ class OnlineServer < ActiveRecord::Base
     out = []
     OnlineServer.all.each { |s| 
 
-      # unless Rails.env.test?
-        # begin
-        #   s = Socket.tcp(s.ip, s.port, connect_timeout: 1)
-        #   s.close
-          if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
+          check = Net::Ping::External.new(host)
+          if !s.name.blank? && !s.ip.blank? && !s.port.blank? && check.ping?
             out << ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
           end
-        # rescue
-        #   next
-        # end
-      # else
-      #   if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
-      #     ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
-      #   end
-      # end
-
 
   }
   
