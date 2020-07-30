@@ -15,9 +15,25 @@ class OnlineServer < ActiveRecord::Base
 
   def self.msl
     OnlineServer.all.collect { |s| 
-    if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
-      ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
-    end
+
+      unless Rails.env.test?
+        require 'socket'
+        begin
+          s = TCPSocket.new s.ip, s.port
+          s.close
+          if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
+            ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
+          end
+        rescue
+          nil
+        end
+      else
+        if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
+          ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
+        end
+      end
+
+
   }.join("\n")
   end
 

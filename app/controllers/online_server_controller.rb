@@ -5,18 +5,7 @@ class OnlineServerController < ApplicationController
     my_ip = request.ip #request.env['REMOTE_HOST']
     # require 'net/http'
     # is_up = Net::HTTP.get_response(URI.parse("http://globalchat2.net/main/check_server?host=#{params[:host]}&port=#{params[:port]}")).body == "200"
-    if params[:host] != 'localhost'
-      # unless Rails.env.test?
-      #   require 'socket'
-      #   begin
-      #     s = TCPSocket.new ip, port
-      #     s.close
-      #   rescue
-      #     render :text => "Server is not online", :status => 404
-      #     return
-      #   end
-      # end
-      
+    if params[:host] != 'localhost'      
       OnlineServer.set_online(params[:name], my_ip, params[:port])
       render :text => "Listed on Nexus"
     else
