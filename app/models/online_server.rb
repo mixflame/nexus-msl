@@ -15,18 +15,19 @@ class OnlineServer < ActiveRecord::Base
 
   def self.msl
     require 'socket'
-    OnlineServer.all.collect { |s| 
+    out = []
+    OnlineServer.all.each { |s| 
 
       # unless Rails.env.test?
-      #   begin
-      #     s = Socket.tcp(s.ip, s.port, connect_timeout: 5)
-      #     s.close
+        begin
+          s = Socket.tcp(s.ip, s.port, connect_timeout: 1)
+          s.close
           if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
-            ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
+            out << ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
           end
-      #   rescue
-      #      nil
-      #   end
+        rescue
+          next
+        end
       # else
       #   if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
       #     ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
@@ -34,7 +35,10 @@ class OnlineServer < ActiveRecord::Base
       # end
 
 
-  }.join("\n")
+  }
+  
+  
+  out.join("\n")
   end
 
 end
