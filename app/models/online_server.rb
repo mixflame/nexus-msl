@@ -14,18 +14,18 @@ class OnlineServer < ActiveRecord::Base
   end
 
   def self.msl
+    require 'socket'
     OnlineServer.all.collect { |s| 
 
       unless Rails.env.test?
-        require 'socket'
         begin
-          s = Socket.tcp(s.ip, s.port, connect_timeout: 1)
+          s = Socket.tcp(s.ip, s.port, connect_timeout: 5)
           s.close
           if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
             ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
           end
         rescue
-           next
+           nil
         end
       else
         if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
