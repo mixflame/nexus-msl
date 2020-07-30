@@ -19,7 +19,7 @@ class OnlineServer < ActiveRecord::Base
       unless Rails.env.test?
         require 'socket'
         begin
-          s = TCPSocket.new s.ip, s.port
+          s = Socket.tcp("www.ruby-lang.org", 10567, connect_timeout: 5)
           s.close
           if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
             ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
