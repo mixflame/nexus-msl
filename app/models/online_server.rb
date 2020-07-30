@@ -18,15 +18,15 @@ class OnlineServer < ActiveRecord::Base
 
       unless Rails.env.test?
         require 'socket'
-        # begin
+        begin
           s = Socket.tcp(s.ip, s.port, connect_timeout: 1)
           s.close
           if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
             ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
           end
-        # rescue
-        #   nil
-        # end
+        rescue
+           next
+        end
       else
         if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
           ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
