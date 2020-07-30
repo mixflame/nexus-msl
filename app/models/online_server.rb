@@ -17,21 +17,21 @@ class OnlineServer < ActiveRecord::Base
     require 'socket'
     OnlineServer.all.collect { |s| 
 
-      unless Rails.env.test?
-        begin
-          s = Socket.tcp(s.ip, s.port, connect_timeout: 5)
-          s.close
+      # unless Rails.env.test?
+      #   begin
+      #     s = Socket.tcp(s.ip, s.port, connect_timeout: 5)
+      #     s.close
           if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
             ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
           end
-        rescue
-           nil
-        end
-      else
-        if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
-          ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
-        end
-      end
+      #   rescue
+      #      nil
+      #   end
+      # else
+      #   if !s.name.blank? && !s.ip.blank? && !s.port.blank? 
+      #     ["SERVER", s.name, s.ip, s.port ].join("::!!::") 
+      #   end
+      # end
 
 
   }.join("\n")
